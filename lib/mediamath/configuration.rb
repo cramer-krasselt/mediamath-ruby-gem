@@ -10,7 +10,7 @@ module MediaMathAPI
       :access_mutex,
       :access_expiry,
       :access_expiry_ahead,
-      :access_token,
+      :cookie,
       :adapter,
       :user,
       :password,
@@ -29,7 +29,7 @@ module MediaMathAPI
     ].freeze
 
     # By default, don't set a user access token
-    DEFAULT_ACCESS_TOKEN = nil
+    DEFAULT_COOKIE = nil
 
     DEFAULT_ACCESS_EXPIRY = Time.now
 
@@ -128,13 +128,13 @@ module MediaMathAPI
 
       # Reset all configuration options to defaults
       def reset
-        self.access_token         = DEFAULT_ACCESS_TOKEN
         self.access_expiry        = DEFAULT_ACCESS_EXPIRY
         self.access_expiry_ahead  = DEFAULT_ACCESS_EXPIRY_AHEAD
         self.adapter              = DEFAULT_ADAPTER
         self.user                 = DEFAULT_USER
         self.password             = DEFAULT_PASSWORD
         self.api_key              = DEFAULT_API_KEY
+        self.cookie               = DEFAULT_COOKIE
         self.client_ips           = DEFAULT_CLIENT_IPS
         self.connection_options   = DEFAULT_CONNECTION_OPTIONS
         self.scope                = DEFAULT_SCOPE

@@ -10,11 +10,10 @@ module MediaMathAPI
       connection.build_url("/oauth/authorize/", params).to_s
     end
 
-    # Return an access token from authorization
-    def get_access_token(options={})
+    def get_access_cookie(options={})
       options[:grant_type] ||= "client_credentials"
       options[:redirect_uri] ||= self.redirect_uri
-      params = access_token_params.merge(options)
+      params = access_cookie_params.merge(options)
       post("/api/v2.0/login", params, signature=false, raw=false, no_response_wrapper=true)
     end
 
@@ -26,7 +25,7 @@ module MediaMathAPI
       }
     end
 
-    def access_token_params
+    def access_cookie_params
       {
         user: user,
         password: password,
