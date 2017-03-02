@@ -8,19 +8,19 @@ module FaradayMiddleware
       @app.call(env).on_complete do |response|
         case response[:status].to_i
         when 400
-          raise TubeMogulAPI::BadRequest, error_message_400(response)
+          raise MediaMathAPI::BadRequest, error_message_400(response)
         when 404
-          raise TubeMogulAPI::NotFound, error_message_400(response)
+          raise MediaMathAPI::NotFound, error_message_400(response)
         when 429
-          raise TubeMogulAPI::TooManyRequests, error_message_400(response)
+          raise MediaMathAPI::TooManyRequests, error_message_400(response)
         when 500
-          raise TubeMogulAPI::InternalServerError, error_message_500(response, "Something is technically wrong.")
+          raise MediaMathAPI::InternalServerError, error_message_500(response, "Something is technically wrong.")
         when 502
-          raise TubeMogulAPI::BadGateway, error_message_500(response, "The server returned an invalid or incomplete response.")
+          raise MediaMathAPI::BadGateway, error_message_500(response, "The server returned an invalid or incomplete response.")
         when 503
-          raise TubeMogulAPI::ServiceUnavailable, error_message_500(response, "TubeMogulAPI is rate limiting your requests.")
+          raise MediaMathAPI::ServiceUnavailable, error_message_500(response, "MediaMathAPI is rate limiting your requests.")
         when 504
-          raise TubeMogulAPI::GatewayTimeout, error_message_500(response, "504 Gateway Time-out")
+          raise MediaMathAPI::GatewayTimeout, error_message_500(response, "504 Gateway Time-out")
         end
       end
     end

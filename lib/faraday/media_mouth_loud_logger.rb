@@ -3,7 +3,7 @@ require 'faraday'
 # @private
 module FaradayMiddleware
   # @private
-  class LoudLogger < Faraday::Middleware
+  class MediaMathLoudLogger < Faraday::Middleware
       extend Forwardable
       def_delegators :@logger, :debug, :info, :warn, :error, :fatal
 
@@ -31,8 +31,9 @@ module FaradayMiddleware
 
       def filter(output)
         if ENV['INSTAGRAM_GEM_REDACT']
-          output = output.to_s.gsub(/client_id=[a-zA-Z0-9]*/,'client_id=[CLIENT-ID]')
-          output = output.to_s.gsub(/access_token=[a-zA-Z0-9]*/,'access_token=[ACCESS-TOKEN]')
+          output = output.to_s.gsub(/user=[a-zA-Z0-9]*/,'user=[USER]')
+          output = output.to_s.gsub(/password=[a-zA-Z0-9]*/,'password=[PASSWORD]')
+          output = output.to_s.gsub(/cookie=[a-zA-Z0-9]*/,'cookie=[COOKIE]')
         else
           output
         end

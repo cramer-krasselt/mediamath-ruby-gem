@@ -4,11 +4,8 @@ require 'base64'
 # @private
 module FaradayMiddleware
   # @private
-  class TubeMogulAPIOAuth2 < Faraday::Middleware
+  class MediaMathAPIOAuth2 < Faraday::Middleware
     def call(env)
-
-      # TODO: if @access_token expired, refresh
-
       if env[:method] == :get or env[:method] == :delete
         if env[:url].query.nil?
           query = {}
@@ -16,30 +13,31 @@ module FaradayMiddleware
           query = Faraday::Utils.parse_query(env[:url].query)
         end
 
-        if @access_token and not query["client_secret"]
-          env[:request_headers] = env[:request_headers].merge('Authorization' => "Bearer #{@access_token}")
+        if @cookie
+          env[:request_headers] = env[:request_headers]
+          .merge('Cookie' => "#{@cookie}")
         end
       else
-        if @access_token and not env[:body] && env[:body][:client_secret]
-          env[:body] = {} if env[:body].nil?
-          env[:request_headers] = env[:request_headers].merge('Authorization' => "Bearer #{@access_token}")
-        elsif @client_id && @client_secret
+        env[:body] ||= ""
+
+        if @cookie
+          env[:request_headers] = env[:request_headers]
+          .merge('Cookie' => "#{@cookie}")
+        else
           # POST to oauth/token
-          base64basic = Base64.strict_encode64("#{@client_id}:#{@client_secret}")
-          env[:request_headers] = env[:request_headers].merge('Authorization' => "Basic #{base64basic}")
-          env[:body] = env[:body].merge(:client_id => @client_id)
+          env[:body] = { user: @user, password: @password, api_key: @api_key }
         end
       end
-
 
       @app.call env
     end
 
-    def initialize(app, client_id, client_secret, access_token=nil)
+    def initialize(app, user, password, api_key, cookie=nil)
       @app = app
-      @client_id = client_id
-      @client_secret = client_secret
-      @access_token = access_token
+      @user = user
+      @password = password
+      @api_key = api_key
+      @cookie = cookie
     end
   end
 end

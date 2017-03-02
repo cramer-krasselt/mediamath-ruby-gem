@@ -1,4 +1,4 @@
-module TubeMogulAPI
+module MediaMathAPI
   # Defines HTTP request methods
   module OAuth
     # Return URL for OAuth authorization
@@ -15,21 +15,22 @@ module TubeMogulAPI
       options[:grant_type] ||= "client_credentials"
       options[:redirect_uri] ||= self.redirect_uri
       params = access_token_params.merge(options)
-      post("/oauth/token/", params, signature=false, raw=false, no_response_wrapper=true)
+      post("/api/v2.0/login", params, signature=false, raw=false, no_response_wrapper=true)
     end
 
     private
 
     def authorization_params
       {
-        :client_id => client_id
+        :user => user
       }
     end
 
     def access_token_params
       {
-        :client_id => client_id,
-        :client_secret => client_secret
+        user: user,
+        password: password,
+        api_key: api_key
       }
     end
   end

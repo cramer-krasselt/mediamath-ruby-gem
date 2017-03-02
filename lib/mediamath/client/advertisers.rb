@@ -1,4 +1,4 @@
-module TubeMogulAPI
+module MediaMathAPI
   class Client
   	# Defines methods related to Ads
     module Advertisers

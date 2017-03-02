@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/tubemogul/version', __FILE__)
+require File.expand_path('../lib/mediamath/version', __FILE__)
 
 Gem::Specification.new do |s|
   s.add_development_dependency('rake', '~> 0.9.2.2')
@@ -15,15 +15,15 @@ Gem::Specification.new do |s|
   # Original author of Instagram Gem
   # s.authors = ["Shayne Sweeney"]
   s.authors = ["Mo Omer"]
-  s.description = %q{A Ruby wrapper for the TubeMogul REST APIs}
+  s.description = %q{A Ruby wrapper for the MediaMath REST APIs}
   s.email = ['momer@c-k.com']
   s.executables = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.files = `git ls-files`.split("\n")
-  s.name = 'tubemogul'
+  s.name = 'mediamath'
   s.platform = Gem::Platform::RUBY
   s.require_paths = ['lib']
   s.required_rubygems_version = Gem::Requirement.new('>= 1.3.6') if s.respond_to? :required_rubygems_version=
   s.rubyforge_project = s.name
-  s.summary = %q{Ruby wrapper for the TubeMogul API}
-  s.version = TubeMogulAPI::VERSION.dup
+  s.summary = %q{Ruby wrapper for the MediaMath API}
+  s.version = MediaMathAPI::VERSION.dup
 end

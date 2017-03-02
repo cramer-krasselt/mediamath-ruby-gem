@@ -1,7 +1,7 @@
 require 'faraday_middleware'
 Dir[File.expand_path('../../faraday/*.rb', __FILE__)].each{|f| require f}
 
-module TubeMogulAPI
+module MediaMathAPI
   # @private
   module Connection
     private
@@ -14,7 +14,7 @@ module TubeMogulAPI
       }.merge(connection_options)
 
       Faraday::Connection.new(options) do |connection|
-        connection.use FaradayMiddleware::TubeMogulAPIOAuth2, client_id, client_secret, access_token
+        connection.use FaradayMiddleware::MediaMathAPIOAuth2, user, password, api_key, cookie
         connection.use Faraday::Request::UrlEncoded
         connection.use FaradayMiddleware::Mashify unless raw
         unless raw
@@ -23,7 +23,7 @@ module TubeMogulAPI
           end
         end
         connection.use FaradayMiddleware::RaiseHttpException
-        connection.use FaradayMiddleware::LoudLogger if loud_logger
+        connection.use FaradayMiddleware::TubeLoudLogger if media_math_loud_logger
         connection.adapter(adapter)
       end
     end
