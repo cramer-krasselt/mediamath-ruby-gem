@@ -10,11 +10,14 @@ module MediaMathAPI
       :access_mutex,
       :access_expiry,
       :access_expiry_ahead,
+      :code,
       :cookie,
       :adapter,
       :user,
       :password,
+      :organization,
       :api_key,
+      :api_secret,
       :client_ips,
       :connection_options,
       :scope,
@@ -28,7 +31,10 @@ module MediaMathAPI
       :sign_requests,
     ].freeze
 
-    # By default, don't set a user access token
+    # By default, don't set a code
+    DEFAULT_CODE = nil
+
+    # By default, don't set a user cookie
     DEFAULT_COOKIE = nil
 
     DEFAULT_ACCESS_EXPIRY = Time.now
@@ -47,8 +53,14 @@ module MediaMathAPI
     # By default, don't set a password
     DEFAULT_PASSWORD = nil
 
+    # By default, don't set a password
+    DEFAULT_ORGANIZATION = nil
+
     # By default, don't set an api_key
     DEFAULT_API_KEY = nil
+
+    # By default, don't set an api_secret
+    DEFAULT_API_SECRET = nil
 
     # By default, don't set application IPs
     DEFAULT_CLIENT_IPS = nil
@@ -133,8 +145,11 @@ module MediaMathAPI
         self.adapter              = DEFAULT_ADAPTER
         self.user                 = DEFAULT_USER
         self.password             = DEFAULT_PASSWORD
+        self.organization         = DEFAULT_ORGANIZATION
         self.api_key              = DEFAULT_API_KEY
+        self.api_secret           = DEFAULT_API_SECRET
         self.cookie               = DEFAULT_COOKIE
+        self.code                 = DEFAULT_CODE
         self.client_ips           = DEFAULT_CLIENT_IPS
         self.connection_options   = DEFAULT_CONNECTION_OPTIONS
         self.scope                = DEFAULT_SCOPE
