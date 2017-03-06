@@ -2,22 +2,25 @@ module MediaMathAPI
   class Client
   	# Defines methods related to Ads
     module Advertisers
-      def advertisers(advertiser_name = nil,
-                      advertiser_domain = nil,
-                      product_category_id = nil,
-                      status = nil,
-                      offset = 0,
-                      limit = Configuration::DEFAULT_PAGINATION_LIMIT)
-
-        options = { }
-
+      def advertisers(page_limit = Configuration::DEFAULT_PAGINATION_LIMIT,
+                    page_offset = nil,
+                    q = nil,
+                    full = '*',
+                    with = nil)
+        options = {}
         # Optionals
-        options.merge!(advertiser_name: advertiser_name) if advertiser_name
-        options.merge!(advertiser_domain: advertiser_domain) if advertiser_domain
-        options.merge!(product_category_id: product_category_id) if product_category_id
-        options.merge!(status: status) if status
+        options.merge!(page_limit: page_limit) if page_limit
+        options.merge!(page_offset: page_offset) if page_offset
+        options.merge!(q: q) if q
+        options.merge!(full: full) if full
+        options.merge!(with: with) if with
 
-        get(Configuration::TRAFFICKING_API_PREFIX + "trafficking/advertisers", options)
+        get(Configuration::DETAIL_API_PREFIX + "/advertisers", options)
+      end
+
+      def advertiser(advertiser_id)
+        get(Configuration::DETAIL_API_PREFIX +
+            "/advertisers/#{advertiser_id}")
       end
     end
   end
