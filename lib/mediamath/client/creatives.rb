@@ -1,10 +1,9 @@
 module MediaMathAPI
   class Client
-    module Campaigns
-      def campaigns(page_limit = Configuration::DEFAULT_PAGINATION_LIMIT,
+    module Creatives
+      def creatives(page_limit = Configuration::DEFAULT_PAGINATION_LIMIT,
                     page_offset = nil,
                     q = nil,
-                    sort_by = nil,
                     full = '*',
                     with = nil)
         options = {}
@@ -12,16 +11,15 @@ module MediaMathAPI
         options.merge!(page_limit: page_limit) if page_limit
         options.merge!(page_offset: page_offset) if page_offset
         options.merge!(q: q) if q
-        options.merge!(sort_by: sort_by) if sort_by
         options.merge!(full: full) if full
         options.merge!(with: with) if with
 
-        get(Configuration::DETAIL_API_PREFIX + "/campaigns", options)
+        get(Configuration::DETAIL_API_PREFIX + "/atomic_creatives", options)
       end
 
-      def campaign(campaign_id)
+      def creative(creative_id)
         get(Configuration::DETAIL_API_PREFIX +
-            "/campaigns/#{campaign_id}")
+            "/atomic_creatives/#{creative_id}")
       end
     end
   end

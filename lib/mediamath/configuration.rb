@@ -8,8 +8,10 @@ module MediaMathAPI
     # An array of valid keys in the options hash when configuring a {MediaMathAPI::API}
     VALID_OPTIONS_KEYS = [
       :access_mutex,
-      :access_expiry,
-      :access_expiry_ahead,
+      :access_token_expiry,
+      :access_token_expiry_ahead,
+      :access_token,
+      :refresh_token,
       :code,
       :cookie,
       :adapter,
@@ -39,8 +41,11 @@ module MediaMathAPI
 
     DEFAULT_ACCESS_EXPIRY = Time.now
 
-    # Mark token as expired N seconds before #access_expiry
+    # Mark token as expired N seconds before #access_token_expiry
     DEFAULT_ACCESS_EXPIRY_AHEAD = 30
+
+    DEFAULT_ACCESS_TOKEN = nil
+    DEFAULT_REFRESH_TOKEN = nil
 
     # The adapter that will be used to connect if none is set
     #
@@ -73,13 +78,13 @@ module MediaMathAPI
     # @note There is no reason to use any other endpoint at this time
     DEFAULT_ENDPOINT = 'https://api.mediamath.com/'.freeze
 
-    TRAFFICKING_API_PREFIX = "v3/"
+    DETAIL_API_PREFIX = "api/v2.0/"
 
-    REPORTING_API_PREFIX = "v1/"
+    REPORTING_API_PREFIX = "reporting/v1/std/"
 
     DEFAULT_TIMEZONE = 'America/Chicago'
 
-    DEFAULT_PAGINATION_LIMIT = 50
+    DEFAULT_PAGINATION_LIMIT = 100
 
     # The response format appended to the path and sent in the 'Accept' header if none is set
     #
@@ -128,7 +133,7 @@ module MediaMathAPI
 
       # Note: relies on server time
       def token_expired?
-        (self.access_expiry - self.access_expiry_ahead) < Time.now
+        (self.access_token_expiry - self.access_token_expiry_ahead) < Time.now
       end
 
       # Create a hash of options and their values
@@ -140,8 +145,10 @@ module MediaMathAPI
 
       # Reset all configuration options to defaults
       def reset
-        self.access_expiry        = DEFAULT_ACCESS_EXPIRY
-        self.access_expiry_ahead  = DEFAULT_ACCESS_EXPIRY_AHEAD
+        self.access_token_expiry        = DEFAULT_ACCESS_EXPIRY
+        self.access_token_expiry_ahead  = DEFAULT_ACCESS_EXPIRY_AHEAD
+        self.access_token         = DEFAULT_ACCESS_TOKEN
+        self.refresh_token        = DEFAULT_REFRESH_TOKEN
         self.adapter              = DEFAULT_ADAPTER
         self.user                 = DEFAULT_USER
         self.password             = DEFAULT_PASSWORD

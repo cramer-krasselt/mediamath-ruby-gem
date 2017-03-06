@@ -7,7 +7,9 @@ module MediaMathAPI
     Dir[File.expand_path('../client/*.rb', __FILE__)].each{|f| require f}
 
     include MediaMathAPI::Client::Campaigns
+    include MediaMathAPI::Client::Creatives
     include MediaMathAPI::Client::Ads
     include MediaMathAPI::Client::Advertisers
+    include MediaMathAPI::Client::PerformanceReports
   end
 end

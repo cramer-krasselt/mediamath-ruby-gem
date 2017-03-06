@@ -14,7 +14,12 @@ module MediaMathAPI
       }.merge(connection_options)
 
       Faraday::Connection.new(options) do |connection|
-        connection.use FaradayMiddleware::MediaMathAPIOAuth2, user, password, api_key, cookie
+        connection.use(FaradayMiddleware::MediaMathAPIOAuth2,
+          user,
+          password,
+          api_key,
+          cookie,
+          access_token)
         connection.use Faraday::Request::UrlEncoded
         connection.use FaradayMiddleware::Mashify unless raw
         unless raw

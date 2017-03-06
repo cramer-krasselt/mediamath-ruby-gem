@@ -1,6 +1,5 @@
 require 'openssl'
 require 'base64'
-require 'pry'
 
 module MediaMathAPI
   # Defines HTTP request methods

@@ -31,11 +31,12 @@ module MediaMathAPI
 
     def get_access_code(options={})
       params = access_code_params.merge(options)
-      post("/oauth2/v1.0/authorize",
+      res = post("/oauth2/v1.0/authorize",
            params,
            signature=false,
            raw=true,
            no_response_wrapper=true)
+      access_code_from_response(res)
     end
 
     def get_access_token(options={})
@@ -43,7 +44,7 @@ module MediaMathAPI
       post("/oauth2/v1.0/token",
            params,
            signature=false,
-           raw=true,
+           raw=false,
            no_response_wrapper=true)
     end
 

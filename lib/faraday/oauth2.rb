@@ -1,6 +1,5 @@
 require 'faraday'
 require 'base64'
-require 'pry'
 
 # @private
 module FaradayMiddleware
@@ -16,7 +15,11 @@ module FaradayMiddleware
 
         if @cookie
           env[:request_headers] = env[:request_headers]
-          .merge('Cookie' => "#{@cookie}")
+          .merge('Cookie' => "adama_session=#{@cookie}")
+        end
+        if @access_token
+          env[:request_headers] = env[:request_headers]
+          .merge('Authorization' => "#{@access_token}")
         end
       else
         env[:body] ||= ""
@@ -24,33 +27,28 @@ module FaradayMiddleware
         if @cookie && @token
           env[:request_headers] = env[:request_headers]
           .merge('Cookie' => "#{@cookie}")
-          # cookie-auth
+          env[:request_headers] = env[:request_headers]
+          .merge('Authorization' => "#{@access_token}")
         elsif env[:url].path.match /v2\.0\/login/
-          # POST to oauth/token
-          env[:body] = { user: @user,
-                         password: @password,
-                         api_key: @api_key }
-          # First leg of oauth2
-          # second leg oauth2
         elsif env[:url].path.match /v1\.0\/token/
-          binding.pry
-          # env[:body] = { code: @code,
-          #                client_secret: @client_secret,
-          #                client_id: @api_key,
-          #                redirect_uri: @redirect_uri,
-          #                grant_type: 'authorization_code' }
         end
       end
 
       @app.call env
     end
 
-    def initialize(app, user, password, api_key, cookie=nil)
+    def initialize(app,
+                   user,
+                   password,
+                   api_key,
+                   cookie=nil,
+                   access_token = nil)
       @app = app
       @user = user
       @password = password
       @api_key = api_key
       @cookie = cookie
+      @access_token = access_token
     end
   end
 end
