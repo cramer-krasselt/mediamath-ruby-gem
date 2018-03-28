@@ -61,7 +61,7 @@ module MediaMathAPI
 
     def access_token_params
       { 
-        grant_type: 'authorization_code',
+        grant_type: 'password',
         username: user,
         password: password,
         audience: 'https://api.mediamath.com/',

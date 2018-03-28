@@ -7,7 +7,7 @@ module MediaMathAPI
     private
 
     def connection(raw = false, connection_endpoint = nil)
-      connection_endpoint = endpoint unless ep
+      connection_endpoint = endpoint unless connection_endpoint
 
       options = {
         :headers => {'Accept' => "application/#{format}; charset=utf-8", 'User-Agent' => user_agent},
