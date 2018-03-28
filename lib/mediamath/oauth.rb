@@ -31,7 +31,8 @@ module MediaMathAPI
 
     def get_access_code(options={})
       params = access_code_params.merge(options)
-      res = post("/oauth2/v1.0/authorize",
+      # res = post("/oauth2/v1.0/authorize",
+      res = get("/authorize",
            params,
            signature=false,
            raw=true,
@@ -41,11 +42,13 @@ module MediaMathAPI
 
     def get_access_token(options={})
       params = access_token_params.merge(options)
-      post("/oauth2/v1.0/token",
+      post("/oauth/token",
            params,
            signature=false,
            raw=false,
-           no_response_wrapper=true)
+           no_response_wrapper=true,
+           sign_requests = false,
+           connection_endpoint = 'https://auth.mediamath.com')
     end
 
     private
@@ -57,12 +60,14 @@ module MediaMathAPI
     end
 
     def access_token_params
-      {
-        code: code,
+      { 
+        grant_type: 'authorization_code',
+        username: user,
+        password: password,
+        audience: 'https://api.mediamath.com/',
+        scope: 'profile',
         client_secret: api_secret,
-        client_id: api_key,
-        redirect_uri: redirect_uri,
-        grant_type: 'authorization_code'
+        client_id: api_key
       }
     end
 
@@ -79,8 +84,7 @@ module MediaMathAPI
     def access_cookie_params
       {
         user: user,
-        password: password,
-        api_key: api_key
+        password: password
       }
     end
   end

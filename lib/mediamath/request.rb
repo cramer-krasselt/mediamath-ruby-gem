@@ -10,8 +10,15 @@ module MediaMathAPI
     end
 
     # Perform an HTTP POST request
-    def post(path, options={}, signature=false, raw=false, no_response_wrapper=no_response_wrapper(), signed=sign_requests)
-      request(:post, path, options, signature, raw, no_response_wrapper, signed)
+    def post(path,
+             options = {},
+             signature = false,
+             raw = false,
+             no_response_wrapper = no_response_wrapper(),
+             signed = sign_requests,
+             connection_endpoint = nil)
+
+      request(:post, path, options, signature, raw, no_response_wrapper, signed, connection_endpoint)
     end
 
     # Perform an HTTP PUT request
@@ -27,8 +34,15 @@ module MediaMathAPI
     private
 
     # Perform an HTTP request
-    def request(method, path, options, signature=false, raw=false, no_response_wrapper=false, signed=sign_requests)
-      response = connection(raw).send(method) do |request|
+    def request(method,
+                path,
+                options,
+                signature = false,
+                raw = false,
+                no_response_wrapper = false,
+                signed = sign_requests,
+                connection_endpoint = nil)
+      response = connection(raw, connection_endpoint).send(method) do |request|
         case method
         when :get, :delete
           request.url(URI.encode(path), options)
@@ -41,7 +55,7 @@ module MediaMathAPI
       return response if raw
       return response.body if no_response_wrapper
       return Response.create( response.body, {:limit => response.headers['x-ratelimit-limit'].to_i,
-                                              :remaining => response.headers['x-ratelimit-remaining'].to_i} )
+                             :remaining => response.headers['x-ratelimit-remaining'].to_i} )
     end
   end
 end

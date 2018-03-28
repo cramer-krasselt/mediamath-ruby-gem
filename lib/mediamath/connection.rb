@@ -6,11 +6,13 @@ module MediaMathAPI
   module Connection
     private
 
-    def connection(raw=false)
+    def connection(raw = false, connection_endpoint = nil)
+      connection_endpoint = endpoint unless ep
+
       options = {
         :headers => {'Accept' => "application/#{format}; charset=utf-8", 'User-Agent' => user_agent},
         :proxy => proxy,
-        :url => endpoint,
+        :url => connection_endpoint,
       }.merge(connection_options)
 
       Faraday::Connection.new(options) do |connection|
