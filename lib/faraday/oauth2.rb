@@ -17,9 +17,12 @@ module FaradayMiddleware
           env[:request_headers] = env[:request_headers]
           .merge('Cookie' => "adama_session=#{@cookie}")
         end
-        if @access_token
-          env[:request_headers] = env[:request_headers]
-          .merge('Authorization' => "#{@access_token}")
+
+        unless env[:url].path.match /\/reporting\/v1\/std\/performance/
+          if @access_token
+            env[:request_headers] = env[:request_headers]
+            .merge('Authorization' => "#{@access_token}")
+          end
         end
       else
         env[:body] ||= ""
